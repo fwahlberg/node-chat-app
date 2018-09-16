@@ -3,6 +3,8 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
+
+const Message = require('./utils/message');
 const PublicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
 const app = express();
@@ -16,26 +18,16 @@ io.on('connection', (socket) => {
   console.log('Client connected');
 
 
-  socket.emit('newMessage', {
-    from: 'Admin',
-    text: 'Welcome to the chat app!'
-  });
+  socket.emit('newMessage', new Message('Admin', 'Welcome to the chat!'));
 
 
-  socket.broadcast.emit('newMessage', {
-    from: 'Admin',
-    text: 'A new user has joined!'
-  })
+  socket.broadcast.emit('newMessage', new Message('Admin', 'A new user has joined!'));
 
 
 
   socket.on('createMessage', (message) => {
     console.log(message);
-    // io.emit('newMessage', {
-    //   from: message.from,
-    //   text: message.text,
-    //   createdAt: new Date().getTime()
-    // });
+    io.emit('newMessage', new Message(message.from, message.text));
 
 
   });
