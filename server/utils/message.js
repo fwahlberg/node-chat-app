@@ -1,9 +1,17 @@
 class Message {
-  constructor(from, text) {
-    return {
-      from,
-      text,
-      createdAt: new Date().getTime()
+  constructor(from = '', data = null, location = false) {
+    if (!location) {
+      return {
+        from,
+        data,
+        createdAt: new Date().getTime()
+      }
+    } else {
+      return {
+        from,
+        url: `https://maps.google.com?q=${data.latitude},${data.longitude}`,
+        createdAt: new Date().getTime()
+      }
     }
   }
 }
