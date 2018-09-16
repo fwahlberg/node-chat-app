@@ -25,10 +25,10 @@ io.on('connection', (socket) => {
 
 
 
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => {
     console.log(message);
     io.emit('newMessage', new Message(message.from, message.text));
-
+    callback();
 
   });
 
